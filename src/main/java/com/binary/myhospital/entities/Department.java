@@ -14,6 +14,7 @@ public class Department {
     private long departmentId;
     private String departmentName;
     private int floorNumber;
+//    this is saying this table is mapped to another(doctor) table by its id
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Doctor> doctors;
 

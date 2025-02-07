@@ -21,6 +21,7 @@ public class Doctor {
 
     public Doctor(){}
     public Doctor(long doctor_id, String first_name, String last_name, long phone_number, String email, String specialization, Department department) {
+
         this.doctor_id = doctor_id;
         this.first_name = first_name;
         this.last_name = last_name;
