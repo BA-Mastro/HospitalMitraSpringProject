@@ -38,31 +38,31 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csfr -> csfr.disable())
-                .cors(cors -> cors.configurationSource(corFilter()))  // Disables CORS
+                .cors(cors -> cors.configurationSource(corFilter()))  // set rules who can access the urls
                 .authorizeHttpRequests(ahr ->
                                 ahr
-                                        .anyRequest().permitAll()
-//                                .requestMatchers(HttpMethod.GET,"/api/doctor/all", "/api/department/all", "/api/doctor/*", "/api/department/*")
-//                                .permitAll()
-//                                .requestMatchers(HttpMethod.POST,"/api/users/", "/api/users/login")
-//                                .permitAll()
-//                                .requestMatchers(HttpMethod.POST,"/api/doctor/", "/api/department/create")
-//                                .authenticated()
-//                                .requestMatchers(HttpMethod.PUT, "/api/doctor/*", "/api/department/update/*")
-//                                .hasAnyRole("DEPARTMENT", "ADMIN")
-//                                .requestMatchers(HttpMethod.DELETE, "/api/doctor/*", "/api/department/delete/*")
-//                                .hasAnyRole("DEPARTMENT", "ADMIN")
-                );
-//                .sessionManagement(ses -> {
-//                    ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//                })
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+//                                        .anyRequest().permitAll() // disable security
+                                .requestMatchers(HttpMethod.GET,"/api/doctor/all", "/api/department/all", "/api/doctor/*", "/api/department/*","/api/department/{id}/with-doctors")
+                                .permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/users/", "/api/users/login")
+                                .permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/doctor/create", "/api/department/create")
+                                .authenticated()
+                                .requestMatchers(HttpMethod.PUT, "/api/doctor/*", "/api/department/*")
+                                .hasAnyRole("DEPARTMENT", "ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/api/doctor/*", "/api/department/*")
+                                .hasAnyRole("DEPARTMENT", "ADMIN")
+                )
+                .sessionManagement(ses -> {
+                    ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 ////                .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
-    //    we added this method for our react project to work and make security disable
+    //    we added this method for our react project to have access to our urls
     @Bean
     public UrlBasedCorsConfigurationSource corFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -74,7 +74,8 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
+//this method hardcodes the roles, so we dont use it
+//    we give this responsibility and flexibility to the userCredential using the method grantedAuthority
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        UserDetails user = User.builder()

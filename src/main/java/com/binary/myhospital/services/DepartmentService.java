@@ -1,5 +1,6 @@
 package com.binary.myhospital.services;
 
+import com.binary.myhospital.dto.DepartmentDto;
 import com.binary.myhospital.entities.Department;
 import com.binary.myhospital.entities.Doctor;
 
@@ -11,4 +12,5 @@ public interface DepartmentService {
     Department updateDepartment(Department department, Long id);
     Department getDepartmentById(long id);
     void deleteDepartment(long id);
+    DepartmentDto getDepartmentWithDoctors(Long departmentId);
 }

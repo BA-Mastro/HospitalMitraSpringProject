@@ -1,5 +1,7 @@
 package com.binary.myhospital.services;
 
+import com.binary.myhospital.dto.DepartmentDto;
+import com.binary.myhospital.dto.DoctorDto;
 import com.binary.myhospital.entities.Department;
 import com.binary.myhospital.entities.Doctor;
 import com.binary.myhospital.exceptions.DepartmentNotFoundException;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService{
@@ -42,12 +45,25 @@ public class DepartmentServiceImpl implements DepartmentService{
 
     @Override
     public Department getDepartmentById(long id) {
-        return departmentRepository.findByIdWithDoctors(id).orElseThrow(()
+        return departmentRepository.findById(id).orElseThrow(()
                 -> new DepartmentNotFoundException("Department with ID = "+ id +" not found!"));
     }
 
     @Override
     public void deleteDepartment(long id) {
         departmentRepository.deleteById(id);
+    }
+
+    @Override
+    public DepartmentDto getDepartmentWithDoctors(Long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Department not found"));
+
+        // Convert Doctor entities to DoctorResponse DTOs
+        List<DoctorDto> doctorList = department.getDoctors().stream()
+                .map(doc -> new DoctorDto(doc.getDoctor_id(), doc.getFirst_name(), doc.getLast_name(), doc.getSpecialization()))
+                .collect(Collectors.toList());
+
+        return new DepartmentDto(department.getDepartmentId(), department.getDepartmentName(), department.getFloorNumber(), doctorList);
     }
 }

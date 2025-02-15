@@ -1,5 +1,6 @@
 package com.binary.myhospital.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -16,7 +17,6 @@ public class Doctor {
     private String specialization;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department")
-    @JsonIgnore
     private Department department;
 
     public Doctor(){}

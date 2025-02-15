@@ -9,10 +9,13 @@ import com.binary.myhospital.exceptions.UsernameTakenException;
 import com.binary.myhospital.repositories.UserCredentialRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -60,10 +63,11 @@ public class UserCredentialServiceImpl implements UserCredentialService{
 
     @Override
     public String login(AuthorizationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.username(),
-                request.password()
-        ));
-        return jwtService.generateToken(request.username());
+            log.info(request.password());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.username(),
+                    request.password()
+            ));
+            return jwtService.generateToken(request.username());
     }
 }

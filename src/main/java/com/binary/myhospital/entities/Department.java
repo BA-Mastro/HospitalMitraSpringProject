@@ -1,6 +1,7 @@
 package com.binary.myhospital.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Department {
     private int floorNumber;
 //    this is saying this table is mapped to another(doctor) table by its id
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore // Allows proper serialization
     private List<Doctor> doctors;
 
     public Department(){

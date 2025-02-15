@@ -1,5 +1,6 @@
 package com.binary.myhospital.controllers;
 
+import com.binary.myhospital.dto.DepartmentDto;
 import com.binary.myhospital.entities.Department;
 import com.binary.myhospital.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,9 @@ public class DepartmentController {
         departmentService.deleteDepartment(id);
         String message = "Department "+id+" is deleted";
         return new ResponseEntity<>(message,HttpStatus.OK);
+    }
+    @GetMapping("/{id}/with-doctors")
+    public ResponseEntity<DepartmentDto> getDepartmentWithDoctors(@PathVariable Long id) {
+        return ResponseEntity.ok(departmentService.getDepartmentWithDoctors(id));
     }
 }

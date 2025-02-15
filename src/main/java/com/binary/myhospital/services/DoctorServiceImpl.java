@@ -28,6 +28,7 @@ public class DoctorServiceImpl implements DoctorService{
 
     @Override
     public Doctor createDoctor(Doctor doctor) {
+        System.out.println("----------------------"+doctor.toString()+"==========="+doctor.getDepartment().getDepartmentId());
         if (doctor.getDepartment() == null || doctor.getDepartment().getDepartmentId() == 0) {
             throw new RuntimeException("Department must be provided.");
         }
