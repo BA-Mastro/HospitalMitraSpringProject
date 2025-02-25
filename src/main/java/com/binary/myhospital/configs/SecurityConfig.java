@@ -41,25 +41,28 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corFilter()))  // set rules who can access the urls
                 .authorizeHttpRequests(ahr ->
                                 ahr
-//                                        .anyRequest().permitAll() // disable security
-                                .requestMatchers(HttpMethod.GET,"/api/doctor/all", "/api/department/all", "/api/doctor/*", "/api/department/*","/api/department/{id}/with-doctors")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/users/", "/api/users/login")
-                                .permitAll()
-                                .requestMatchers(HttpMethod.POST,"/api/doctor/create", "/api/department/create")
-                                .authenticated()
-                                .requestMatchers(HttpMethod.PUT, "/api/doctor/*", "/api/department/*")
-                                .hasAnyRole("DEPARTMENT", "ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/api/doctor/*", "/api/department/*")
-                                .hasAnyRole("DEPARTMENT", "ADMIN")
-                )
-                .sessionManagement(ses -> {
-                    ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                                        .anyRequest().permitAll() // disable security
+//---------------------comment these out for disabling security part 1: -> start:
+//                                .requestMatchers(HttpMethod.GET,"/api/doctor/all", "/api/department/all", "/api/doctor/*", "/api/department/*","/api/department/{id}/with-doctors")
+//                                .permitAll()
+//                                .requestMatchers(HttpMethod.POST,"/api/users/", "/api/users/login")
+//                                .permitAll()
+//                                .requestMatchers(HttpMethod.POST,"/api/doctor/create", "/api/department/create")
+//                                .authenticated()
+//                                .requestMatchers(HttpMethod.PUT, "/api/doctor/*", "/api/department/*")
+//                                .hasAnyRole("DEPARTMENT", "ADMIN")
+//                                .requestMatchers(HttpMethod.DELETE, "/api/doctor/*", "/api/department/*")
+//                                .hasAnyRole("DEPARTMENT", "ADMIN")
+//-------------------- end part 1: -> add );
+                );
+//-------------------comment out these line part 2: start
+//                .sessionManagement(ses -> {
+//                    ses.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                })
+//                .authenticationProvider(authenticationProvider)
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 ////                .httpBasic(Customizer.withDefaults());
-
+//-----------------end part 2
         return http.build();
     }
     //    we added this method for our react project to have access to our urls

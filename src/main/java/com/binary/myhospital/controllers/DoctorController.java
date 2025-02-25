@@ -28,9 +28,8 @@ public class DoctorController {
     }
     @PostMapping("/create")
     public ResponseEntity<Doctor> createAccount(@RequestBody Doctor doctor){
-        System.out.println("================"+doctor.toString());
         Doctor newDoc = doctorService.createDoctor(doctor);
-        return new ResponseEntity<>(doctor,HttpStatus.CREATED);
+        return new ResponseEntity<>(newDoc,HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
     public ResponseEntity<Doctor> getDoctorByID(@PathVariable long id){
