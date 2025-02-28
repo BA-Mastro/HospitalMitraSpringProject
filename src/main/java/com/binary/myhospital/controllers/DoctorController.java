@@ -1,5 +1,6 @@
 package com.binary.myhospital.controllers;
 
+import com.binary.myhospital.dto.DoctorDto;
 import com.binary.myhospital.entities.Doctor;
 import com.binary.myhospital.services.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
 import java.util.List;
 
 @RestController
@@ -17,18 +17,15 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping("/home")
-    public String home(){
-        return "Welcome to Mitra Hospital, This is the Doctor's Home";
-    }
     @GetMapping("/all")
     public ResponseEntity<List<Doctor>> getDoctorsList(){
         List<Doctor> doctors = doctorService.getAllDoctors();
         return new ResponseEntity<>(doctors,HttpStatus.OK);
     }
     @PostMapping("/create")
-    public ResponseEntity<Doctor> createAccount(@RequestBody Doctor doctor){
+    public ResponseEntity<Doctor> createAccount(@RequestBody DoctorDto doctor){
         Doctor newDoc = doctorService.createDoctor(doctor);
+
         return new ResponseEntity<>(newDoc,HttpStatus.CREATED);
     }
     @GetMapping("/{id}")

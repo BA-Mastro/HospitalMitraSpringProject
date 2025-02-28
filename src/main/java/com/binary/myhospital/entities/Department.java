@@ -16,8 +16,8 @@ public class Department {
     private String departmentName;
     private int floorNumber;
 //    this is saying this table is mapped to another(doctor) table by its id
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonIgnore // Allows proper serialization
+    @JsonIgnore // Prevents infinite recursion
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Doctor> doctors;
 
     public Department(){

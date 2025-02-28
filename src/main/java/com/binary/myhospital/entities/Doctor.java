@@ -15,8 +15,9 @@ public class Doctor {
     private long phone_number;
     private String email;
     private String specialization;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "department")
+    @JoinColumn(name = "department_id", referencedColumnName = "departmentId")
     private Department department;
 
     public Doctor(){}

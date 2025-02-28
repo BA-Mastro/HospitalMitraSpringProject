@@ -1,5 +1,6 @@
 package com.binary.myhospital.services;
 
+import com.binary.myhospital.dto.DoctorDto;
 import com.binary.myhospital.entities.Department;
 import com.binary.myhospital.entities.Doctor;
 import com.binary.myhospital.exceptions.DoctorNotFoundException;
@@ -27,21 +28,25 @@ public class DoctorServiceImpl implements DoctorService{
     }
 
     @Override
-    public Doctor createDoctor(Doctor doctor) {
-        System.out.println("----------------------"+doctor.toString()+"==========="+doctor.getDepartment().getDepartmentId());
-        if (doctor.getDepartment() == null || doctor.getDepartment().getDepartmentId() == 0) {
+    public Doctor createDoctor(DoctorDto doctorDto) {
+        if (doctorDto.getDepartment_id() == null || doctorDto.getDepartment_id() == 0) {
             throw new RuntimeException("Department must be provided.");
         }
 
-        Department department = departmentRepository.findById(doctor.getDepartment().getDepartmentId())
+        Department department = departmentRepository.findById(doctorDto.getDepartment_id())
                 .orElseThrow(() -> new RuntimeException("Department not found"));
 
-        doctor.setDepartment(department);
-        department.getDoctors().add(doctor); // Ensure doctor list is updated
+        Doctor doc = new Doctor();
+        doc.setFirst_name(doctorDto.getFirstName());
+        doc.setLast_name(doctorDto.getLastName());
+        doc.setPhone_number(doctorDto.getPhoneNumber());
+        doc.setEmail(doctorDto.getEmail());
+        doc.setSpecialization(doctorDto.getSpecialization());
+        doc.setDepartment(department);
 
-        departmentRepository.save(department); // Save department so list is updated
-        return doctorRepository.save(doctor);
+        return doctorRepository.save(doc);
     }
+
 
     @Override
     public Doctor updateDoctor(Doctor doctor, long id) {
